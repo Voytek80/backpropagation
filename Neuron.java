@@ -2,8 +2,11 @@ import java.util.Random;
 
 
 public class Neuron {
-	double [] wagi;
-	int liczba_wejsc;
+	protected double [] wejscia;
+	protected double [] wagi;
+	protected double sigma;
+	protected int liczba_wejsc;
+	protected double [] korekty;
 
 	public Neuron(){
 		liczba_wejsc=0;
@@ -12,6 +15,7 @@ public class Neuron {
 	public Neuron(int liczba_wejsc){
 		this.liczba_wejsc=liczba_wejsc;
 		wagi=new double[liczba_wejsc+1];
+		korekty = new double [liczba_wejsc + 1];
 		generuj();
 	}
 	private void generuj() {
@@ -23,6 +27,8 @@ public class Neuron {
 	public double oblicz_wyjscie(double [] wejscia){
 		double fi=wagi[0];
 		//double fi=0.0;
+		this.wejscia = new double [wejscia.length];
+		System.arraycopy(wejscia, 0, this.wejscia, 0, wejscia.length);
 		
 		for(int i=1;i<=liczba_wejsc;i++)
 			
@@ -33,5 +39,21 @@ public class Neuron {
 		//double wynik=fi; //f.a. liniowa 
 		return wynik;
 	}
+
+	public void obliczKorekty(double eta) {
+		double temp;
+		double pochodna = 1.0;
+		for(int i = 1; i <= liczba_wejsc; i++) {
+			temp = 1.0/(1.0+Math.exp(wejscia[i-1] * wagi[i]));
+			pochodna = temp * (1 - temp);
+			korekty[i] += eta * sigma * pochodna * wejscia[i-1];
+		}
+	}
 	
+	public void wprowadzKorekty() {
+		for(int i = 1; i <= liczba_wejsc; i++) {
+			wagi[i] += korekty[i];
+			korekty[i] = 0.0;
+		}
+	}
 }

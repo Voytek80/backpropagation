@@ -1,9 +1,9 @@
 
 public class ElementUczacy {
 	private double [] dane;
-	private double pozadana;
+	private double [] pozadana;
 	
-	public ElementUczacy(double [] dane, double pozadana) {
+	public ElementUczacy(double [] dane, double [] pozadana) {
 		this.dane = dane;
 		this.pozadana = pozadana;
 	}
@@ -12,7 +12,7 @@ public class ElementUczacy {
 		return dane;
 	}
 	
-	public double pobierzWartoscPozadana() {
+	public double [] pobierzWartoscPozadana() {
 		return pozadana;
 	}
 }

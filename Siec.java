@@ -20,12 +20,12 @@ public class Siec {
 		return wyjscie;
 	}
 
-	public void propagacjaBledowWstecz(double sigma) {
+	public void propagacjaBledowWstecz(double [] sigma) {
 		int idOstatniejWarstwy = liczba_warstw - 1;
 		for(int i = idOstatniejWarstwy; i >= 0; i--) {
 			for(int j = 0; j < warstwy[i].liczba_neuronow; j++) {
 				if(i == idOstatniejWarstwy) {
-					warstwy[i].neurony[j].sigma = sigma;
+					warstwy[i].neurony[j].sigma = sigma[j];
 				} else {
 					double lokalnaSigma = 0.0;
 					for(int k = 0; k < warstwy[i+1].liczba_neuronow; k++) {

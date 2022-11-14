@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class AlgorytmWstecznejPropagacjiBledow {
 	private Siec siec;
@@ -19,15 +20,17 @@ public class AlgorytmWstecznejPropagacjiBledow {
 	}
 	
 	public double uruchomEpoke(double eta) {
-		double sigma;
+		double [] sigma;
 		double bladSrKwadratowy = 0.0;
 		for(int i = 0; i < ciagUczacy.length; i++) {
-			// TODO: stworzyć tablicę sigm dla wszystkich wyjsc
-			double y = siec.oblicz_wyjscie(ciagUczacy[i].pobierzDane())[0];
-			sigma = ciagUczacy[i].pobierzWartoscPozadana() - y;
-			bladSrKwadratowy += Math.pow(sigma, 2.0);
+			double [] y = siec.oblicz_wyjscie(ciagUczacy[i].pobierzDane());
+			sigma = new double [y.length];
+			for(int j = 0; j < sigma.length; j++) {
+				sigma[j] = ciagUczacy[i].pobierzWartoscPozadana()[j] - y[j];
+			}
 			siec.propagacjaBledowWstecz(sigma);
 			siec.obliczKorekty(eta);
+			bladSrKwadratowy += Math.pow(Arrays.stream(sigma).sum() / sigma.length, 2.0);
 		}
 		return bladSrKwadratowy / ciagUczacy.length;
 	}

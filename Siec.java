@@ -19,5 +19,38 @@ public class Siec {
 			wejscia = wyjscie = warstwy[i].oblicz_wyjscie(wejscia);
 		return wyjscie;
 	}
+
+	public void propagacjaBledowWstecz(double sigma) {
+		int idOstatniejWarstwy = liczba_warstw - 1;
+		for(int i = idOstatniejWarstwy; i >= 0; i--) {
+			for(int j = 0; j < warstwy[i].liczba_neuronow; j++) {
+				if(i == idOstatniejWarstwy) {
+					warstwy[i].neurony[j].sigma = sigma;
+				} else {
+					double lokalnaSigma = 0.0;
+					for(int k = 0; k < warstwy[i+1].liczba_neuronow; k++) {
+						lokalnaSigma += warstwy[i+1].neurony[k].wagi[j+1] * warstwy[i+1].neurony[k].sigma;
+					}
+					warstwy[i].neurony[j].sigma = lokalnaSigma;
+				}
+			}
+		}
+	}
 	
+	public void obliczKorekty(double eta) {
+		for(int i = 0; i < liczba_warstw; i++) {
+			for(int j = 0; j < warstwy[i].liczba_neuronow; j++) {
+				warstwy[i].neurony[j].obliczKorekty(eta);
+			}
+		}
+		
+	}
+	
+	public void wprowadzKorekty() {
+		for(int i = 0; i < liczba_warstw; i++) {
+			for(int j = 0; j < warstwy[i].liczba_neuronow; j++) {
+				warstwy[i].neurony[j].wprowadzKorekty();
+			}
+		}
+	}
 }
